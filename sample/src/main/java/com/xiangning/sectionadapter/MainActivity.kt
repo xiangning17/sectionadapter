@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         val section = adapter.register(
             SectionAdapter.Linker(
                 String::class.java,
-                SimpleItemBinder<String>(R.layout.activity_main)
+                SimpleItemBinder(R.layout.activity_main)
             )
         )
     }

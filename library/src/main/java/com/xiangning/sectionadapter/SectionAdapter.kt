@@ -19,9 +19,9 @@ class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val sectionCounter = SectionListCounter<Section>()
     private val viewTypeToBinders = mutableMapOf<Int, ItemBinder<*, *>>()
 
-    data class Linker<T : Any>(val clazz: Class<T>, val binder: ItemBinder<*, *>)
+    data class Linker<T : Any>(val clazz: Class<T>, val binder: ItemBinder<T, *>)
 
-    inner class Section(private val linkers: List<Linker<*>>) {
+    inner class Section internal constructor(private val linkers: List<Linker<*>>) {
 
         internal val binders = mutableMapOf<Class<*>, ItemBinder<*, *>>()
 
@@ -33,7 +33,7 @@ class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-        fun getBinder(clazz: Class<*>) = binders[clazz]
+        internal fun getBinder(clazz: Class<*>) = binders[clazz]
 
         fun getLinkerSize() = linkers.size
 
@@ -47,6 +47,7 @@ class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             return items.slice(pos until pos + count)
         }
 
+        @Suppress("UNCHECKED_CAST")
         fun <T : Any> getItem(sectionPos: Int): T {
             val (_, pos, count) = sectionCounter.getSectionInfo(this)!!
             if (sectionPos !in 0 until count) {
@@ -56,6 +57,8 @@ class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         fun getItemSize() = sectionCounter.getSectionInfo(this)!!.count
+
+        fun getInfo() = sectionCounter.getSectionInfo(this)!!
 
         fun toRealPosition(sectionPos: Int): Int {
             val (_, pos, count) = sectionCounter.getSectionInfo(this)!!
@@ -119,8 +122,6 @@ class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun getSectionInfoOfPosition(position: Int): SectionInfo<Section>? {
         return sectionCounter.getSectionInfo(position)
     }
-
-    fun getSectionInfo(section: Section) = sectionCounter.getSectionInfo(section)
 
     private fun setItemsWithoutCheck(section: Section, newTypeItems: List<Any>) {
         val (_, sectionPos, sectionSize) = sectionCounter.getSectionInfo(section)!!
