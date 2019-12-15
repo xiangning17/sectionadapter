@@ -12,7 +12,7 @@ import kotlin.math.min
 /**
  * 用于RecyclerView的分组适配器，根据注册顺序生成不同的分组，每个分组可单独管理数据。
  */
-class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items = listOf<Any>()
 
@@ -105,18 +105,31 @@ class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun <T : Any> register(clazz: Class<T>, binder: ItemBinder<T, *>): Section {
-        return register(Linker(clazz, binder))
+    @JvmOverloads
+    fun <T : Any> register(clazz: Class<T>, binder: ItemBinder<T, *>, index: Int = -1): Section {
+        return register(Linker(clazz, binder), index = index)
     }
 
-    fun register(vararg linkers: Linker<*>) = register(Section(linkers.toList()))
+    @JvmOverloads
+    fun register(vararg linkers: Linker<*>, index: Int = -1) =
+        register(Section(linkers.toList()), index)
 
-    fun register(section: Section): Section {
-        sectionCounter.register(section)
+    @JvmOverloads
+    fun register(section: Section, index: Int = -1): Section {
+        sectionCounter.register(index, section)
         for (binder in section.binders.values) {
             viewTypeToBinders[binder.hashCode()] = binder
         }
         return section
+    }
+
+    fun unregister(section: Section) {
+        section.setItems(emptyList())
+        sectionCounter.unregister(section)
+        // onViewDetachedFromWindow callback needs the cache later, so keep it.
+        // for (binder in section.binders.values) {
+        //     viewTypeToBinders.remove(binder.hashCode())
+        // }
     }
 
     fun getSectionInfoOfPosition(position: Int): SectionInfo<Section>? {
