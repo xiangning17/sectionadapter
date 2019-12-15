@@ -36,7 +36,8 @@ publish {
     userOrg = 'xiangning17'//bintray.com用户名
     groupId = 'com.xiangning'//jcenter上的路径
     artifactId = 'sectionadapter'//项目名称
-    publishVersion = '0.0.2'//版本号
-    desc = '这是个可方便创建RecyclerView的Adapter工具'//描述，不重要
-    website = 'https://github.com/xiangning17'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+    publishVersion = '0.0.3'//版本号
+    desc = 'A adapter for android recyclerview which could make a complex type view page easily.'//描述，不重要
+    website = 'https://github.com/xiangning17/sectionadapter'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+    licences = ['Apache-2.0']
 }

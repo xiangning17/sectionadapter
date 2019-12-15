@@ -1,7 +1,8 @@
-package com.xiangning.sectionadapter
+package com.xiangning.sectionadapter.sample
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.xiangning.sectionadapter.SectionAdapter
 import com.xiangning.sectionadapter.binder.SimpleItemBinder
 
 class MainActivity : AppCompatActivity() {
