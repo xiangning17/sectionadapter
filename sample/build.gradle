@@ -34,5 +34,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation project(':library')
-//    implementation 'com.xiangning:sectionadapter:0.0.1'
+//    implementation 'com.xiangning:sectionadapter:0.0.4'
 }
