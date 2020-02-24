@@ -15,8 +15,7 @@ import kotlinx.android.extensions.LayoutContainer
  *     experimental = true
  * }
  */
-class GeneralViewHolder(override val containerView: View) :
-    RecyclerView.ViewHolder(containerView), LayoutContainer {
+open class GeneralViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val viewCache = mutableMapOf<Int, View>()
 

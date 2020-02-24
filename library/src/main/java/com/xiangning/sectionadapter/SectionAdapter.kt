@@ -170,12 +170,13 @@ open class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     }
 
-    fun getItem(position: Int): Any? {
+    @Suppress("UNCHECKED_CAST")
+    fun <T> getItem(position: Int): T? {
         if (position !in items.indices) {
             return null
         }
 
-        return items[position]
+        return items[position] as T?
     }
 
 
