@@ -26,7 +26,7 @@ open class SectionAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         internal val binders = mutableMapOf<Class<*>, ItemBinder<*, *>>()
 
         init {
-            assert(linkers.isNotEmpty()) { "linkers不能为空" }
+            check(linkers.isNotEmpty()) { "linkers不能为空" }
             for ((clazz, binder) in linkers) {
                 binders[clazz] = binder
                 binder.section = this

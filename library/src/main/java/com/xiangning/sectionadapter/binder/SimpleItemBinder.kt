@@ -35,7 +35,7 @@ open class SimpleItemBinder<T> :
         viewProvider: ((inflater: LayoutInflater, parent: ViewGroup) -> View)? = null,
         bindHolder: ((holder: GeneralViewHolder, item: T) -> Unit)? = null
     ) {
-        assert(layout != 0 || viewProvider != null)
+        check(layout != 0 || viewProvider != null)
         this.layout = layout
         this.viewProvider = viewProvider
         this.bindHolder = bindHolder
