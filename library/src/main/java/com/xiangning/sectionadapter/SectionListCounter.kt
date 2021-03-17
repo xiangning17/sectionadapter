@@ -5,7 +5,7 @@ import kotlin.math.sign
 data class SectionInfo<T>(val section: T, val position: Int, val count: Int)
 
 /**
- * 记录每个分组在总列表中的位置信息的工具类，根据访问数据的连续性，可高效的定位给定位置所在的分组
+ * 记录每个分组(Section)在总列表中的位置信息的工具类，根据访问数据的连续性，可高效的定位给定位置所在的分组
  */
 class SectionListCounter<T : Any> {
 
@@ -32,30 +32,22 @@ class SectionListCounter<T : Any> {
 
     fun register(index: Int, key: T, size: Int = 0) {
         if (key !in indexes) {
+            // 根据index选定将要插入到列表的位置，index或者末尾
             val insert = if (index in keyList.indices) index else keyList.size
-
-            // add key
+            // 插入到指定位置
             keyList.add(insert, key)
-
-            // set index
+            // 记录key的index到map，便于根据key索引快速查找其在列表的index
             indexes[key] = insert
-            // update other index, start from insert+1 for the inserted one at insert.
+            // 更新位于插入位置后的key在map中的存储值
             for (i in insert + 1 until keyList.size) {
                 keyList[i].let { indexes[it] = indexes[it]!! + 1 }
             }
 
-            // add position
-            positionList.add(insert + 1, positionList[insert] + size)
-            // update position
-            if (size != 0) {
-                for (i in insert + 2 until positionList.size) {
-                    positionList[i] += size
-                }
-            }
-        } else {
-            setSize(key, size)
+            // 插入占位节点，pos与前节点一致，代表size为0，后面setSize更新为正确的size
+            positionList.add(insert + 1, positionList[insert])
         }
 
+        setSize(key, size)
     }
 
     fun unregister(key: T) {
@@ -67,6 +59,8 @@ class SectionListCounter<T : Any> {
                 for (i in index + 1 until positionList.size) {
                     positionList[i] -= size
                 }
+
+                hitInfo.key = null
             }
         }
     }
@@ -80,6 +74,8 @@ class SectionListCounter<T : Any> {
                 positionList[i] += delta
             }
         }
+
+        hitInfo.key = null
     }
 
     fun getSize(key: T) = indexes[key]?.let { positionList[it + 1] - positionList[it] } ?: 0
