@@ -1,18 +1,17 @@
-package com.xiangning.sectionadapter.binder
+package com.xiangning.sectionadapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import com.xiangning.sectionadapter.ItemBinder
+import com.xiangning.sectionadapter.core.ItemBinder
 
 /**
  * @author xiangning
  * @Date 2019-11-22
  * @description 方便创建ItemBinder的工具类
  */
-open class SimpleItemBinder<T> :
-    ItemBinder<T, GeneralViewHolder> {
+open class SimpleItemBinder<T : Any> : ItemBinder<T, GeneralViewHolder> {
 
     private val layout: Int
 

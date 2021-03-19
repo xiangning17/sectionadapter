@@ -1,13 +1,18 @@
 package com.xiangning.sectionadapter.sample
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.xiangning.sectionadapter.SectionAdapter
-import com.xiangning.sectionadapter.binder.SimpleItemBinder
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.recyclerview.widget.RecyclerView
+import com.xiangning.sectionadapter.SimpleItemBinder
+import com.xiangning.sectionadapter.SingleViewSection
+import com.xiangning.sectionadapter.core.Section
+import com.xiangning.sectionadapter.core.SectionAdapter
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,38 +20,52 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = SectionAdapterExt()
+        val adapter = SectionAdapter()
 
+        val recycler = findViewById<RecyclerView>(R.id.recycler)
         recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recycler.adapter = adapter
 
-        val header1 = TextView(this).apply { text = "header1" }
-        val header2 = TextView(this).apply { text = "header2" }
-        val header3 = TextView(this).apply { text = "header3" }
-        adapter.addHeader(header1)
-        adapter.addHeader(header2)
+        // 添加内容分组1，并设置数据
+        val contentSection = adapter.register(
+            String::class.java,
+            SimpleItemBinder({ _, _ -> TextView(this) }) { holder, item ->
+                (holder.itemView as TextView).text = "内容1 $item"
+            })
+        contentSection.setItems((1..20).map { "$it" })
 
-        adapter.register(
-            SectionAdapter.Linker(
+        // 添加内容分组2，并设置数据
+        val contentSection2 = Section()
+            .addLinker(
                 Integer::class.java,
-                SimpleItemBinder(R.layout.layout_header)
-            )
-        )
-            .setItems((1..30).toList())
+                SimpleItemBinder({ inflater, parent ->
+                    inflater.inflate(R.layout.layout_content, parent, false)
+                }) { holder, item ->
+                    holder.get<ImageView>(R.id.icon).setBackgroundColor(item.toInt())
+                    holder.get<TextView>(R.id.text).text = "内容2 图文 颜色=$item"
+                })
+            .addLinker(
+                String::class.java,
+                SimpleItemBinder({ _, _ -> TextView(this) }) { holder, item ->
+                    (holder.itemView as TextView).text = "内容2 文本 $item"
+                })
+        contentSection2.addItems((1..10).map { Random.Default.nextInt() })
+        contentSection2.addItems((1..5).map { "你好$it" })
+        adapter.register(contentSection2)
 
-        val footer1 = TextView(this).apply { text = "footer1" }
-        val footer2 = TextView(this).apply { text = "footer2" }
-        val footer3 = TextView(this).apply { text = "footer3" }
-        adapter.addFooter(footer1)
-        adapter.addFooter(footer2)
+        val header = View.inflate(this, R.layout.layout_header, null)
+        header.setOnClickListener {
+            adapter.unregister(contentSection)
+        }
 
+        header.setOnLongClickListener {
+            contentSection2.removeAt(0)
+            true
+        }
 
-        header1.postDelayed({
-            adapter.removeHeader(header2)
-            adapter.addHeader(header3)
-            adapter.addFooter(footer3)
-        }, 3000)
+        // 插入Header分组到最前面，其实现是一个固定的view
+        adapter.register(0, SingleViewSection(header))
 
     }
 }
