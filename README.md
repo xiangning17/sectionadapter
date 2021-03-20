@@ -1,7 +1,8 @@
 # SectionAdapter
 A adapter for android recyclerview which could make a complex type view page easily.
 
-针对Android的RecyclerView的分组(Section)适配器，用于帮助我们方便地创建复杂的页面。这个项目始于另一个类似的优秀开源项目[MultiType](https://github.com/drakeet/MultiType)，使用其来开发RecycleView确实带来了很多方便。
+针对Android的RecyclerView的分组(Section)适配器，用于帮助我们方便地创建复杂的页面。
+这个项目始于另一个类似的优秀开源项目[MultiType](https://github.com/drakeet/MultiType)，使用其来开发RecycleView确实带来了很多方便。
 
 但也是在使用过程中也还是发现有些不便，比如典型的页面大概构型是“头部+内容+尾部”的排版，一般“头部”和“尾部”不需要经常更新，内容区域要进行数据更新时就需要在一个总的数据列表（items）中去进行繁杂的截取拼接等操作，有时数据的更改和通知更新处理得不好引起的不同步还会导致错误，而且很难做到局部更新，通常都是使用notifyDataSetChanged进行全量更新。
 
@@ -76,8 +77,8 @@ class MainActivity : AppCompatActivity() {
 
 主要的使用方式就是这样了，实现的效果如下：
 
-<img src="images/snapshot.png" alt="image-20210320180803832"" />
+![snapshot](images/snapshot.png）
 
 ## 其他（more）
 
-总的来说，相较于MultiType的完全混排，提炼了一个**分组（Section）**的概念。分组可以按照设定的顺序进行排列保证我们大的板块排列，同时在分组内也保留了多类型的视图映射，可以做混排，另外也对分组的数据操作做了封装，可以方便地进行修改。
+总的来说，相较于MultiType的完全混排，提炼了一个 **分组(Section)** 的概念。分组可以按照设定的顺序进行排列保证我们大的板块排列，同时在分组内也保留了多类型的视图映射，可以做混排，另外也对分组的数据操作做了封装，可以方便地进行修改。
