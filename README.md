@@ -12,7 +12,7 @@ A adapter for android recyclerview which could make a complex type view page eas
 
 ## 开始（Getting started）
 
-下载依赖包: [section-adapter_1.0.0.aar](sample/libs/section-adapter_1.0.0.aar)，放到模块的`libs`目录下，然后在模块的`build.gradle`添加依赖，可参照Sample模块的`build.gradle`：[sample/build.gradle](sample/build.gradle)
+依赖包: [sample/libs](sample/libs/)，在目录下下载最新版本aar放到模块的`libs`目录下，然后在模块的`build.gradle`添加依赖，可参照Sample模块的`build.gradle`：[sample/build.gradle](sample/build.gradle)
 
 ## 使用方式（Usage）
 

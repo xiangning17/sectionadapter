@@ -8,11 +8,18 @@ import com.xiangning.sectionadapter.core.Section
 /**
  * 直接展示View的Section，可用于Header等类型
  */
-class SingleViewSection(view: View) : Section() {
+class SingleViewSection(val view: View) : Section() {
+
+    private val binder = SingleItemBinder<String>(view)
 
     init {
-        addLinker(Integer::class.java, SingleItemBinder(view))
-        addItem(0)
+        addLinker(String::class.java, binder)
+        addItem("")
+    }
+
+    override fun onUnregister() {
+        super.onUnregister()
+        binder.holder?.setIsRecyclable(true)
     }
 
     /**
@@ -20,7 +27,7 @@ class SingleViewSection(view: View) : Section() {
      */
     class SingleItemBinder<T : Any>(view: View) : SimpleItemBinder<T>({ _, _ -> view }) {
 
-        private var holder: GeneralViewHolder? = null
+        internal var holder: GeneralViewHolder? = null
 
         override fun onCreateViewHolder(
             inflater: LayoutInflater,

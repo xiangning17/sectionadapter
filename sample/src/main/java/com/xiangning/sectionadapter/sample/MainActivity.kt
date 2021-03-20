@@ -70,5 +70,18 @@ class MainActivity : AppCompatActivity() {
         // 也不需要去使用adapter的notify，内部自动处理
         content.addItems((1..5).map { "字符串$it" })
 
+
+        val footer = SingleViewSection(TextView(this).apply { text = "尾部" })
+        adapter.register(footer)
+
+        var attached = true
+        footer.view.setOnClickListener {
+            if (attached.also { attached = !it }) {
+                adapter.unregister(header)
+            } else {
+                adapter.register(0, header)
+            }
+        }
+
     }
 }

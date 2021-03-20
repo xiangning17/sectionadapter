@@ -19,13 +19,13 @@ open class Section : MutableIterable<Any> {
         return this
     }
 
-    internal fun onRegister(adapter: SectionAdapter, info: SectionInfo<Section>) {
+    open fun onRegister(adapter: SectionAdapter, info: SectionInfo<Section>) {
         sectionAdapter = adapter
         sectionInfo = info
         adapter.notifyItemRangeInserted(info.start, info.count)
     }
 
-    internal fun onUnregister() {
+    open fun onUnregister() {
         isNotNull(sectionAdapter, sectionInfo) { adapter, info ->
             adapter.notifyItemRangeRemoved(info.start, info.count)
         }
