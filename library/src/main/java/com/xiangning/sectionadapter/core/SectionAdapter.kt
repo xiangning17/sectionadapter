@@ -2,8 +2,6 @@ package com.xiangning.sectionadapter.core
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -111,31 +109,4 @@ open class SectionAdapter : RecyclerView.Adapter<SectionViewHolder>() {
         holder.binder?.onViewAttachedToWindow(holder)
     }
 
-    /**
-     * 加入了偏移修正的ListUpdateCallback
-     *
-     * @see DiffUtil.DiffResult.dispatchUpdatesTo
-     */
-    private class AdapterListUpdateCallback(
-        private val mAdapter: RecyclerView.Adapter<*>,
-        private val offset: Int
-    ) :
-        ListUpdateCallback {
-
-        override fun onInserted(position: Int, count: Int) {
-            mAdapter.notifyItemRangeInserted(offset + position, count)
-        }
-
-        override fun onRemoved(position: Int, count: Int) {
-            mAdapter.notifyItemRangeRemoved(offset + position, count)
-        }
-
-        override fun onMoved(fromPosition: Int, toPosition: Int) {
-            mAdapter.notifyItemMoved(offset + fromPosition, offset + toPosition)
-        }
-
-        override fun onChanged(position: Int, count: Int, payload: Any?) {
-            mAdapter.notifyItemRangeChanged(offset + position, count, payload)
-        }
-    }
 }
