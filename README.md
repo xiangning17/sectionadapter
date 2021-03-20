@@ -77,7 +77,8 @@ class MainActivity : AppCompatActivity() {
 
 主要的使用方式就是这样了，实现的效果如下：
 
-![snapshot](images/snapshot.png）
+<img width="360" alt="snapshot" src="https://user-images.githubusercontent.com/27916852/111868841-3409a580-89b7-11eb-8af9-659fe0469247.png">
+
 
 ## 其他（more）
 
