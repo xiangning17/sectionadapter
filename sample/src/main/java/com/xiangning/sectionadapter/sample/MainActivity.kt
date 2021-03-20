@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
         // 测试复用binder，然后解除注册的情况
         val borrow = adapter.register(String::class.java, stringBinder)
-            .apply { setItems((1..3).map { "这是共用binder的内容$it" }) }
+            .setItems((1..3).map { "这是共用binder的内容$it" })
 
 
         val footer = SingleViewSection(TextView(this).apply { text = "尾部" })

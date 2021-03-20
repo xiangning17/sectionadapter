@@ -73,7 +73,7 @@ open class Section : MutableIterable<Any> {
         notifyItemChanged(pos)
     }
 
-    fun setItems(items: Iterable<Any>) {
+    fun setItems(items: Iterable<Any>): Section {
         // 先删除
         val oldSize = getItemSize()
         this.items.clear()
@@ -81,22 +81,22 @@ open class Section : MutableIterable<Any> {
             adapter.notifyItemRangeRemoved(info.start, oldSize)
         }
         // 再添加
-        addItems(items)
+        return addItems(items)
     }
 
-    fun addItem(item: Any) {
-        addItems(getItemSize(), listOf(item))
+    fun addItem(item: Any): Section {
+        return addItems(getItemSize(), listOf(item))
     }
 
-    fun addItem(index: Int, item: Any) {
-        addItems(index, listOf(item))
+    fun addItem(index: Int, item: Any): Section {
+        return addItems(index, listOf(item))
     }
 
-    fun <T : Any> addItems(items: Iterable<T>) {
-        addItems(getItemSize(), items)
+    fun <T : Any> addItems(items: Iterable<T>): Section {
+        return addItems(getItemSize(), items)
     }
 
-    fun <T : Any> addItems(index: Int, items: Iterable<T>) {
+    fun <T : Any> addItems(index: Int, items: Iterable<T>): Section {
         var i = index
         for (item in items) {
             if (item.javaClass in binders) {
@@ -109,18 +109,21 @@ open class Section : MutableIterable<Any> {
         update { adapter, info ->
             adapter.notifyItemRangeInserted(info.toFullPosition(index), i - index)
         }
+        return this
     }
 
-    fun removeItem(item: Any) {
+    fun removeItem(item: Any): Section {
         val index = this.items.indexOf(item)
         if (index >= 0) {
             removeAt(index)
         }
+        return this
     }
 
-    fun removeAt(index: Int) {
+    fun removeAt(index: Int): Section {
         this.items.removeAt(index)
         update { adapter, info -> adapter.notifyItemRemoved(info.toFullPosition(index)) }
+        return this
     }
 
     private inline fun update(notify: (adapter: SectionAdapter, info: SectionInfo<Section>) -> Unit) {
