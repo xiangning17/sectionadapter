@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
 主要的使用方式就是这样了，实现的效果如下：
 
-<img src="/Users/xiangning/StudioProjects/SectionAdapter/images/snapshot.png" alt="image-20210320180803832" style="zoom:50%;" />
+<img src="images/snapshot.png" alt="image-20210320180803832"" />
 
 ## 其他（more）
 
