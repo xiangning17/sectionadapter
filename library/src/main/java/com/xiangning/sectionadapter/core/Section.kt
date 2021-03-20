@@ -2,7 +2,7 @@ package com.xiangning.sectionadapter.core
 
 import com.xiangning.sectionadapter.isNotNull
 
-open class Section {
+open class Section : MutableIterable<Any> {
 
     internal val binders = mutableMapOf<Class<*>, ItemBinder<*, *>>()
     private var sectionAdapter: SectionAdapter? = null
@@ -124,6 +124,26 @@ open class Section {
                 info.toFullPosition(toPosition)
             )
         }
+    }
+
+    override fun iterator(): MutableIterator<Any> = Iter()
+
+    private inner class Iter : MutableIterator<Any> {
+
+        private var index = -1
+
+        override fun hasNext(): Boolean {
+            return index + 1 < getItemSize()
+        }
+
+        override fun next(): Any {
+            return get(++index)
+        }
+
+        override fun remove() {
+            removeAt(index--)
+        }
+
     }
 
 }
