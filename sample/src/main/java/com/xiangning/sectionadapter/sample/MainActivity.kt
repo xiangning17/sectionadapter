@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         // 可以先于register对分组设置数据，只能设置注册过的数据类型
         // 这里先设置一些Integer类型的数据
-        content.setItems((1..5).map { Random.Default.nextInt() })
+        content.setItems((1..10).map { Random.Default.nextInt() })
 
         // 注册分组到adapter
         adapter.register(content)
@@ -70,17 +70,22 @@ class MainActivity : AppCompatActivity() {
         // 也不需要去使用adapter的notify，内部自动处理
         content.addItems((1..5).map { "字符串$it" })
 
+        // 测试复用binder，然后解除注册的情况
+        val borrow = adapter.register(String::class.java, stringBinder)
+            .apply { setItems((1..3).map { "这是共用binder的内容$it" }) }
+
 
         val footer = SingleViewSection(TextView(this).apply { text = "尾部" })
         adapter.register(footer)
 
         var attached = true
         footer.view.setOnClickListener {
-            if (attached.also { attached = !it }) {
-                adapter.unregister(header)
-            } else {
-                adapter.register(0, header)
-            }
+//            if (attached.also { attached = !it }) {
+//                adapter.unregister(header)
+//            } else {
+//                adapter.register(0, header)
+//            }
+            adapter.unregister(borrow)
         }
 
     }

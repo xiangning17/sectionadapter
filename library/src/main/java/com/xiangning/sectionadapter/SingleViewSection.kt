@@ -17,8 +17,7 @@ class SingleViewSection(val view: View) : Section() {
         addItem("")
     }
 
-    override fun onUnregister() {
-        super.onUnregister()
+    override fun onUnbind() {
         binder.holder?.setIsRecyclable(true)
     }
 

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 open class SectionAdapter : RecyclerView.Adapter<SectionViewHolder>() {
 
     private val sectionCounter = SectionListCounter<Section>()
-    private val viewTypeToBinders = mutableMapOf<Int, ItemBinder<*, *>>()
+    internal val viewTypeToBinders = mutableMapOf<Int, ItemBinder<*, *>>()
 
     fun <T : Any> register(clazz: Class<T>, binder: ItemBinder<T, *>): Section {
         return register(-1, clazz, binder)
@@ -25,20 +25,14 @@ open class SectionAdapter : RecyclerView.Adapter<SectionViewHolder>() {
     }
 
     fun register(index: Int, section: Section): Section {
-        for (binder in section.binders.values) {
-            viewTypeToBinders[binder.hashCode()] = binder
-        }
         sectionCounter.register(index, section, section.getItemSize())
-        section.onRegister(this, sectionCounter.getSectionInfo(section)!!)
+        section.bind(this, sectionCounter.getSectionInfo(section)!!)
         return section
     }
 
     fun unregister(section: Section) {
-        for (binder in section.binders.values) {
-            viewTypeToBinders.remove(binder.hashCode())
-        }
         sectionCounter.unregister(section)
-        section.onUnregister()
+        section.unbind()
     }
 
     internal fun updateSectionSize(section: Section) {
@@ -49,11 +43,13 @@ open class SectionAdapter : RecyclerView.Adapter<SectionViewHolder>() {
         return sectionCounter.getCount()
     }
 
+    fun getSectionSize() = sectionCounter.getSectionListSize()
+
     override fun getItemViewType(position: Int): Int {
         return sectionCounter.getSectionInfoByPos(position)!!.let { info ->
             val section = info.section
             val item: Any = section[info.toSectionPos(position)]
-            section.getBinder(item::class.java).hashCode()
+            section.getViewType(item)
         }
     }
 

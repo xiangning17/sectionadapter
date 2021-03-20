@@ -1,10 +1,11 @@
 package com.xiangning.sectionadapter.core
 
 import com.xiangning.sectionadapter.isNotNull
+import java.util.*
 
 open class Section : MutableIterable<Any> {
 
-    internal val binders = mutableMapOf<Class<*>, ItemBinder<*, *>>()
+    private val binders = mutableMapOf<Class<*>, ItemBinder<*, *>>()
     private var sectionAdapter: SectionAdapter? = null
     var sectionInfo: SectionInfo<Section>? = null
 
@@ -19,21 +20,45 @@ open class Section : MutableIterable<Any> {
         return this
     }
 
-    open fun onRegister(adapter: SectionAdapter, info: SectionInfo<Section>) {
+    internal fun bind(adapter: SectionAdapter, info: SectionInfo<Section>) {
         sectionAdapter = adapter
         sectionInfo = info
+
+        for (binder in binders.values) {
+            adapter.viewTypeToBinders[getViewType(binder)] = binder
+        }
+
         adapter.notifyItemRangeInserted(info.start, info.count)
+
+        onBind(adapter, info)
     }
 
-    open fun onUnregister() {
+    internal fun unbind() {
         isNotNull(sectionAdapter, sectionInfo) { adapter, info ->
+            for (binder in binders.values) {
+                adapter.viewTypeToBinders.remove(getViewType(binder))
+            }
             adapter.notifyItemRangeRemoved(info.start, info.count)
         }
         sectionAdapter = null
         sectionInfo = null
+
+        onUnbind()
+    }
+
+    protected open fun onBind(adapter: SectionAdapter, info: SectionInfo<Section>) {
+
+    }
+
+    protected open fun onUnbind() {
+
     }
 
     internal fun getBinder(clazz: Class<*>) = binders[clazz]
+
+    internal fun getViewType(item: Any) = getViewType(binders[item.javaClass]!!)
+
+    private fun getViewType(binder: ItemBinder<*, *>) = Objects.hash(this, binder)
 
 
     fun getItemSize() = items.size
