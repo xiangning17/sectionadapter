@@ -15,7 +15,7 @@ A adapter for android recyclerview which could make a complex type view page eas
 
 ```groovy
 dependencies {
-    implementation 'com.xiangning:sectionadapter:1.0.2'
+    implementation 'com.xiangning:sectionadapter:1.0.3'
 }
 ```
 
