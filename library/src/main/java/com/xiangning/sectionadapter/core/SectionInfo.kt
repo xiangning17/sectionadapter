@@ -3,7 +3,9 @@ package com.xiangning.sectionadapter.core
 /**
  * 分组信息封装
  */
-data class SectionInfo<T>(val section: T, var start: Int, var count: Int = 0) {
+data class SectionInfo<T>
+@JvmOverloads
+constructor(val section: T, var start: Int, var count: Int = 0) {
     val end: Int
         get() = start + count
 

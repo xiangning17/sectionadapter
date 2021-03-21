@@ -16,10 +16,12 @@ class SectionListCounter<T : Any> {
     private val indexes = LinkedHashMap<T, Int>()
     private val sectionInfoList = mutableListOf<SectionInfo<T>>()
 
+    @JvmOverloads
     fun register(section: T, size: Int = 0) {
         register(-1, section, size)
     }
 
+    @JvmOverloads
     fun register(index: Int, section: T, size: Int = 0) {
         if (section in indexes) {
             setSize(section, size)

@@ -11,19 +11,21 @@ import com.xiangning.sectionadapter.core.ItemBinder
  * @Date 2019-11-22
  * @description 方便创建ItemBinder的工具类
  */
-open class SimpleItemBinder<T : Any> : ItemBinder<T, GeneralViewHolder> {
+open class SimpleItemBinder<T : Any>() : ItemBinder<T, GeneralViewHolder>() {
 
-    private val layout: Int
+    private var layout: Int = 0
 
-    private val viewProvider: ((inflater: LayoutInflater, parent: ViewGroup) -> View)?
+    private var viewProvider: ((inflater: LayoutInflater, parent: ViewGroup) -> View)? = null
 
-    private val bindHolder: ((holder: GeneralViewHolder, item: T) -> Unit)?
+    private var bindHolder: ((holder: GeneralViewHolder, item: T) -> Unit)? = null
 
+    @JvmOverloads
     constructor(
         @LayoutRes layout: Int,
         bindHolder: ((holder: GeneralViewHolder, item: T) -> Unit)? = null
     ) : this(layout, null, bindHolder)
 
+    @JvmOverloads
     constructor(
         viewProvider: ((inflater: LayoutInflater, parent: ViewGroup) -> View),
         bindHolder: ((holder: GeneralViewHolder, item: T) -> Unit)? = null
@@ -33,7 +35,7 @@ open class SimpleItemBinder<T : Any> : ItemBinder<T, GeneralViewHolder> {
         @LayoutRes layout: Int = 0,
         viewProvider: ((inflater: LayoutInflater, parent: ViewGroup) -> View)? = null,
         bindHolder: ((holder: GeneralViewHolder, item: T) -> Unit)? = null
-    ) {
+    ) : this() {
         check(layout != 0 || viewProvider != null)
         this.layout = layout
         this.viewProvider = viewProvider
