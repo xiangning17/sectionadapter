@@ -75,11 +75,7 @@ open class Section : MutableIterable<Any> {
 
     fun setItems(items: Iterable<Any>): Section {
         // 先删除
-        val oldSize = getItemSize()
-        this.items.clear()
-        update { adapter, info ->
-            adapter.notifyItemRangeRemoved(info.start, oldSize)
-        }
+        clear()
         // 再添加
         return addItems(items)
     }
@@ -115,15 +111,23 @@ open class Section : MutableIterable<Any> {
     fun removeItem(item: Any): Section {
         val index = this.items.indexOf(item)
         if (index >= 0) {
-            removeAt(index)
+            removeItemAt(index)
         }
         return this
     }
 
-    fun removeAt(index: Int): Section {
+    fun removeItemAt(index: Int): Section {
         this.items.removeAt(index)
         update { adapter, info -> adapter.notifyItemRemoved(info.toFullPosition(index)) }
         return this
+    }
+
+    fun clear() {
+        val oldSize = getItemSize()
+        this.items.clear()
+        update { adapter, info ->
+            adapter.notifyItemRangeRemoved(info.start, oldSize)
+        }
     }
 
     private inline fun update(notify: (adapter: SectionAdapter, info: SectionInfo<Section>) -> Unit) {
@@ -169,7 +173,7 @@ open class Section : MutableIterable<Any> {
         }
 
         override fun remove() {
-            removeAt(index--)
+            removeItemAt(index--)
         }
 
     }
