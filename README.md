@@ -2,9 +2,8 @@
 A adapter for android recyclerview which could make a complex type view page easily.
 
 针对Android的RecyclerView的分组(Section)适配器，用于帮助我们方便地创建复杂的页面。
-这个项目始于另一个类似的优秀开源项目[MultiType](https://github.com/drakeet/MultiType)，使用其来开发RecycleView确实带来了很多方便。
 
-但也是在使用过程中也还是发现有些不便，比如典型的页面大概构型是“头部+内容+尾部”的排版，一般“头部”和“尾部”不需要经常更新，内容区域要进行数据更新时就需要在一个总的数据列表（items）中去进行繁杂的截取拼接等操作，有时数据的更改和通知更新处理得不好引起的不同步还会导致错误，而且很难做到局部更新，通常都是使用notifyDataSetChanged进行全量更新。
+这个项目始于另一个类似的优秀开源项目[MultiType](https://github.com/drakeet/MultiType)，使用其来开发RecycleView确实带来了很多方便。但也是在使用过程中也还是发现有些不便，比如典型的页面大概构型是“头部+内容+尾部”的排版，一般“头部”和“尾部”不需要经常更新，内容区域要进行数据更新时就需要在一个总的数据列表（items）中去进行繁杂的截取拼接等操作，有时数据的更改和通知更新处理得不好引起的不同步还会导致错误，而且很难做到局部更新，通常都是使用notifyDataSetChanged进行全量更新。
 
 究其原因是其本身就是设计为全混排的模式，没有一个“**分组（Section）**”的概念。分组可以按照设定的顺序进行排列，针对上面说到的情况，我们希望只需要对“内容”这个分组进行数据操作更新就好了。在Google官方准备推出的RecycleView 2.0版本中的[ContactAdapter](https://zhuanlan.zhihu.com/p/275635988)也是与此相似的概念，可以把多个经典的Adapter进行顺序的连接，每一个adapter就相当于一个分组。
 
@@ -12,7 +11,13 @@ A adapter for android recyclerview which could make a complex type view page eas
 
 ## 开始（Getting started）
 
-依赖包: [sample/libs](sample/libs/)，在目录下下载最新版本aar放到模块的`libs`目录下，然后在模块的`build.gradle`添加依赖，可参照Sample模块的`build.gradle`：[sample/build.gradle](sample/build.gradle)
+首先，在`build.gradle`添加依赖：
+
+```groovy
+dependencies {
+    implementation 'com.xiangning:sectionadapter:1.0.2'
+}
+```
 
 ## 使用方式（Usage）
 
