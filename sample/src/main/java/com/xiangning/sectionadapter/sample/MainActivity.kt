@@ -61,31 +61,40 @@ class MainActivity : AppCompatActivity() {
 
         // 可以先于register对分组设置数据，只能设置注册过的数据类型
         // 这里先设置一些Integer类型的数据
-        content.setItems((1..10).map { Random.Default.nextInt() })
+        // 分组在未注册到adapter是，完全可以当成一个List使用
+        // 其提供了add、remove、get、迭代遍历等操作
+        // 当注册到adapter后，这些数据会及时渲染
+        // 而解注册后，分组数据也可保持以待后续再次注册使用
+        content.setItems((1..5).map { Random.Default.nextInt() })
 
         // 注册分组到adapter
         adapter.register(content)
 
         // 也可以注册后再对分组数据进行增删，只需要持有分组的引用调用相应方法即可进行数据更改
         // 也不需要去使用adapter的notify，内部自动处理
-        content.addItems((1..5).map { "字符串$it" })
+        content.addItems((1..3).map { "字符串$it" })
 
-        // 测试复用binder，然后解除注册的情况
+        // 不同Section里复用binder，解除注册时不会影响另外的Section
+        // 这里使用adapter.register快捷注册生成一个Section，并设置数据，最终返回Section自身
         val borrow = adapter.register(String::class.java, stringBinder)
             .setItems((1..3).map { "这是共用binder的内容$it" })
 
-
+        // 添加一个尾部分组
         val footer = SingleViewSection(TextView(this).apply { text = "尾部" })
         adapter.register(footer)
 
+        // 根据标志测试动态register和unregister一个分组的情况
         var attached = true
         footer.view.setOnClickListener {
-//            if (attached.also { attached = !it }) {
-//                adapter.unregister(header)
-//            } else {
-//                adapter.register(0, header)
-//            }
-            adapter.unregister(borrow)
+            if (attached.also { attached = !it }) {
+                // unregister后，分组还可用于下次register
+                adapter.unregister(header)
+            } else {
+                adapter.register(0, header)
+            }
+
+            // 测试删除复用的Section
+            //  adapter.unregister(borrow)
         }
 
     }
