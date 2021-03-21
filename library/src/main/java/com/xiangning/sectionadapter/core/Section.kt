@@ -21,6 +21,10 @@ open class Section : MutableIterable<Any> {
     }
 
     internal fun bind(adapter: SectionAdapter, info: SectionInfo<Section>) {
+        if (sectionAdapter != null || sectionInfo != null) {
+            throw IllegalStateException("Section already bind!")
+        }
+
         sectionAdapter = adapter
         sectionInfo = info
 
@@ -39,11 +43,12 @@ open class Section : MutableIterable<Any> {
                 adapter.viewTypeToBinders.remove(getViewType(binder))
             }
             adapter.notifyItemRangeRemoved(info.start, info.count)
-        }
-        sectionAdapter = null
-        sectionInfo = null
 
-        onUnbind()
+            sectionAdapter = null
+            sectionInfo = null
+
+            onUnbind()
+        }
     }
 
     protected open fun onBind(adapter: SectionAdapter, info: SectionInfo<Section>) {
