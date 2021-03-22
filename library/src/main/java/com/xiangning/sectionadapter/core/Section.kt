@@ -78,6 +78,10 @@ open class Section : MutableIterable<Any> {
         notifyItemChanged(pos)
     }
 
+    operator fun contains(item: Any) = items.contains(item)
+
+    fun indexOf(item: Any) = items.indexOf(item)
+
     fun setItems(items: Iterable<Any>): Section {
         // 先删除
         clear()
@@ -160,6 +164,16 @@ open class Section : MutableIterable<Any> {
                 info.toFullPosition(fromPosition),
                 info.toFullPosition(toPosition)
             )
+        }
+    }
+
+    inline fun <reified T> foreachOnType(block: (Int, T) -> Boolean) {
+        var item: Any
+        for (i in 0 until getItemSize()) {
+            item = this[i]
+            if (item is T && block(i, item)) {
+                notifyItemChanged(i)
+            }
         }
     }
 
