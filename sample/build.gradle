@@ -33,5 +33,5 @@ dependencies {
 
 //    implementation(name: 'section-adapter_1.0.2', ext: 'aar')
 //    implementation project(':library')
-    implementation 'com.xiangning:sectionadapter:1.0.4'
+    implementation 'com.xiangning:sectionadapter:1.0.5'
 }

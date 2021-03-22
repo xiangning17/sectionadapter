@@ -15,7 +15,7 @@ A adapter for android recyclerview which could make a complex type view page eas
 
 ```groovy
 dependencies {
-    implementation 'com.xiangning:sectionadapter:1.0.4'
+    implementation 'com.xiangning:sectionadapter:1.0.5'
 }
 ```
 
@@ -100,7 +100,16 @@ class MainActivity : AppCompatActivity() {
             }
             
             // 测试删除复用的Section
-            //  adapter.unregister(borrow)
+            // adapter.unregister(borrow)
+           
+            // 在某个类型上进行迭代
+            // content.foreachOnType<String> { i, item ->
+            //    // 如果item是引用类型，可以修改其内容
+            //    // 但这里是String不可变类型，所以用了[]（set操作符）进行内容更新
+            //    content[i] = "修改内容$1"
+            //    // 返回true代表有改动，需要notify刷新
+            //    true
+            }
         }
 
     }
