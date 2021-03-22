@@ -13,7 +13,7 @@ class SectionListCounter<T : Any> {
 
     private val hitInfo = HitInfo<T>()
 
-    private val indexes = LinkedHashMap<T, Int>()
+    private val indexes = HashMap<T, Int>()
     private val sectionInfoList = mutableListOf<SectionInfo<T>>()
 
     @JvmOverloads

@@ -3,13 +3,24 @@ package com.xiangning.sectionadapter.core
 /**
  * 分组信息封装
  */
-data class SectionInfo<T>
+class SectionInfo<T>
 @JvmOverloads
-constructor(val section: T, var start: Int, var count: Int = 0) {
-    val end: Int
-        get() = start + count
+constructor(val section: T, start: Int, count: Int = 0) {
+    var start: Int = start
+        set(value) {
+            end += value - start
+            field = value
+        }
+    var end: Int = start + count
+        private set
 
-    operator fun contains(fullPos: Int): Boolean = fullPos in start until start + count
+    var count: Int
+        get() = end - start
+        set(value) {
+            end = start + value
+        }
+
+    operator fun contains(fullPos: Int): Boolean = fullPos in start until end
 
     fun toSectionPos(fullPos: Int) = fullPos - start
     fun toFullPosition(sectionPos: Int) = start + sectionPos
