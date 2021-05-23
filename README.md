@@ -1,6 +1,9 @@
 # SectionAdapter
 A adapter for android recyclerview which could make a complex type view page easily.
 
+[![](https://jitpack.io/v/xiangning17/sectionadapter.svg)](https://jitpack.io/#xiangning17/sectionadapter)
+
+
 针对Android的RecyclerView的分组(Section)适配器，用于帮助我们方便地创建复杂的页面。
 
 这个项目始于另一个类似的优秀开源项目[MultiType](https://github.com/drakeet/MultiType)，使用其来开发RecycleView确实带来了很多方便。但也是在使用过程中也还是发现有些不便，比如典型的页面大概构型是“头部+内容+尾部”的排版，一般“头部”和“尾部”不需要经常更新，内容区域要进行数据更新时就需要在一个总的数据列表（items）中去进行繁杂的截取拼接等操作，有时数据的更改和通知更新处理得不好引起的不同步还会导致错误，而且很难做到局部更新，通常都是使用notifyDataSetChanged进行全量更新。
@@ -11,11 +14,20 @@ A adapter for android recyclerview which could make a complex type view page eas
 
 ## 开始（Getting started）
 
-首先，在`build.gradle`添加依赖：
+1. 在项目根目录的build.gradle中添加jitpack的maven仓库:
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
+2. 在模块依赖中声明库依赖：
 ```groovy
 dependencies {
-    implementation 'com.xiangning:sectionadapter:1.0.5'
+    implementation 'com.github.xiangning17:sectionadapter:1.0.5'
 }
 ```
 
